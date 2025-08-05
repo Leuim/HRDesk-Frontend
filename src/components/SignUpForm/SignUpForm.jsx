@@ -9,7 +9,7 @@ const SignUpForm = () => {
     name: '',
     password: '',
     confPassword: '',
-    role:''
+    role: ''
   }
   const { setUser } = useContext(UserContext)
   const navigate = useNavigate()
@@ -30,7 +30,7 @@ const SignUpForm = () => {
     evt.preventDefault()
     // console.log(formData);
     try {
-      const newUser = await authServices.signup(formData)
+      const newUser = await authServices.signUp(formData)
       // console.log(newUser);
       setUser(newUser)
       navigate('/')
@@ -41,19 +41,39 @@ const SignUpForm = () => {
   }
   return (
     <form onSubmit={handleSubmit}>
-      <label htmlFor="name">Name: </label>
-      <input type="text" name="name" id="name" onChange={handleChange} value={formData.name} />
+      <label htmlFor="name">Username: </label>
+      <input
+        type="text"
+        autoComplete='off'
+        name="name"
+        id="name"
+        onChange={handleChange}
+        value={formData.name}
+      />
       <label htmlFor="password">Password: </label>
-      <input type="text" name="password" id="password" onChange={handleChange} value={formData.password} />
+      <input
+        type="text"
+        autoComplete='off'
+        name="password"
+        id="password"
+        onChange={handleChange}
+        value={formData.password}
+      />
       <label htmlFor="confPassword">Confirm Password: </label>
-      <input type="text" name="confPassword" id="confPassword" onChange={handleChange} value={formData.confPassword} />
+      <input type="text"
+        name="confPassword"
+        id="confPassword"
+        onChange={handleChange}
+        value={formData.confPassword}
+      />
       <label htmlFor="role">Role: </label>
       <select name="role" id="role" value={formData.role} onChange={handleChange}>
-      <option value="">--- Select Role ---</option>
-      <option value="admin">Admin</option>
-      <option value="employee">Employee</option>
+        <option value="">--- Select Role ---</option>
+        <option value="admin">Admin</option>
+        <option value="employee">Employee</option>
       </select>
       <button type='submit' disabled={isFormValid()}>Sign Up</button>
+      <button onClick={() => navigate()}>Cancel</button>
     </form>
   )
 }

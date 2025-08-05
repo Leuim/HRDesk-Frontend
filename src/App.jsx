@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router'
 import NavBar from './components/NavBar/NavBar'
 import SignUpForm from './components/SignUpForm/SignUpForm'
 import { UserContext } from './contexts/UserContext'
+import SignInForm from './components/SignInForm/SignInForm'
 
 const App = () => {
   const {user} = useContext(UserContext)
@@ -14,6 +15,7 @@ const App = () => {
     <Routes>
       <Route path='/' element={<h1>Home</h1>}/>
       <Route path='/sign-up' element={<SignUpForm/>}/>
+      <Route path='/sign-in' element={<SignInForm/>}/>
     </Routes>
     </>
   )
