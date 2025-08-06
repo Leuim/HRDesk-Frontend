@@ -14,8 +14,11 @@ const NavBar = () => {
         {user ? (
           <>
             <li><Link to='/' onClick={handleSignout}>Sign Out</Link></li>
-            {user.role === 'admin' ? (
+            {user.role === 'admin' ? (<>
               <li><Link to='/admin-dashboard'>Admin dashboard</Link></li>
+              <li>Pending Leave Requests</li>
+              <li><Link to='/employees-records'>View Employees Records</Link></li>
+              </>
             ) : (
               <li><Link to='/employee-dashboard'>Employee dashboard</Link></li>
             )}
