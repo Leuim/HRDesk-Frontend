@@ -3,14 +3,13 @@ import { UserContext } from '../../contexts/UserContext'
 import { useContext } from 'react'
 import { useNavigate } from 'react-router'
 
+
 const AdminDashboard = () => {
   const [pendingRequest, setPendingRequest] = useState(0)
   const {user} = useContext(UserContext)
   const navigate = useNavigate()
 
-  useEffect(()=>{
 
-  },[])
 
   return (
     <>
