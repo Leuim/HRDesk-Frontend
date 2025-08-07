@@ -15,6 +15,17 @@ const EmployeesRecords = () => {
             setEmployees(employeesRecords)
         })()
     }, [])
+    const handleEmployeeUpdate = (updatedUser) => {
+        const updatedList = employees.map((employee) => {
+            if (employee._id === updatedUser._id) {
+                return updatedUser; 
+            } else {
+                return employee;
+            }
+        });
+        setEmployees(updatedList);
+    };
+
 
     const handleDelete = async (employeeId) => {
         try {
@@ -30,7 +41,7 @@ const EmployeesRecords = () => {
     return (
         <>
             <h1>Employees Records</h1>
-            <button onClick={()=> navigate('/sign-up')}>Sign Up a User</button>
+            <button onClick={() => navigate('/sign-up')}>Sign Up a User</button>
             <table>
                 <thead>
                     <tr>
@@ -52,7 +63,7 @@ const EmployeesRecords = () => {
                                 <td>{employee.leavebalance.annual}</td>
                                 <td>{employee.leavebalance.sick}</td>
                                 <td>{employee.leavebalance.others}</td>
-                                <td><button onClick={() => {setIsFormOn(true); setSelectedEmployee(employee);}}>Update User</button></td>
+                                <td><button onClick={() => { setIsFormOn(true); setSelectedEmployee(employee); }}>Update User</button></td>
                                 <td><button onClick={() => handleDelete(employee._id)}>Delete User</button></td>
                             </tr>
                         ))
@@ -63,7 +74,7 @@ const EmployeesRecords = () => {
                     )}
                 </tbody>
             </table>
-            {isFormOn ? <EditUserForm selectedEmployee={selectedEmployee} setIsFormOn={setIsFormOn}/> : null}
+            {isFormOn ? <EditUserForm selectedEmployee={selectedEmployee} setIsFormOn={setIsFormOn} handleEmployeeUpdate={handleEmployeeUpdate} /> : null}
         </>
     )
 }

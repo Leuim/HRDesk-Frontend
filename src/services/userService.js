@@ -21,7 +21,7 @@ const index = async () => {
 
 const deleteUser = async (employeeId) => {
     try {
-        console.log(`${BASE_URL}/user/${employeeId}`);
+        console.log(`${BASE_URL}/${employeeId}`);
         const res = await fetch(`${BASE_URL}/${employeeId}`, {
             method: 'DELETE',
             headers: {
@@ -38,4 +38,21 @@ const deleteUser = async (employeeId) => {
     }
 }
 
-export { index,deleteUser }
+const update = async (employeeId, formData) =>{
+    try {
+        const res = await fetch(`${BASE_URL}/${employeeId}`,{
+            method:'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+            body:JSON.stringify(formData)
+        })
+        const data = await res.json()
+        // console.log('data returned in service', data);
+        return data
+    } catch (err) {
+        console.log(err);
+    }
+}
+export { index, deleteUser, update }
