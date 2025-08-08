@@ -55,4 +55,7 @@ const update = async (employeeId, formData) =>{
         console.log(err);
     }
 }
+
+
+
 export { index, deleteUser, update }

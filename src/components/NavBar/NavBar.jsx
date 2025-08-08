@@ -17,7 +17,7 @@ const NavBar = () => {
             {user.role === 'admin' ? (<>
               <li><Link to='/admin-dashboard'>Admin dashboard</Link></li>
               <li>Pending Leave Requests</li>
-              <li><Link to='/employees-records'>View Employees Records</Link></li>
+              <li><Link to='/admin-dashboard/employees-records'>View Employees Records</Link></li>
               </>
             ) : (
               <li><Link to='/employee-dashboard'>Employee dashboard</Link></li>

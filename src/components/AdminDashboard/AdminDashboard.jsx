@@ -18,8 +18,8 @@ const AdminDashboard = () => {
         <h2>Pending Leave Requests</h2>
         <p>{pendingRequest} Pending Leave requests remaining</p>
       </div>
-      <button onClick={()=>navigate('/employees-records')}>Employees Records</button>
-      <button onClick={()=> navigate('/pending-requests')}>Pending Leave Requests</button>
+      <button onClick={()=> navigate('/admin-dashboard/employees-records')}>Employees Records</button>
+      <button onClick={()=> navigate('/admin-dashboard/pending-leaverequests')}>Pending Leave Requests</button>
     </>
   )
 }
