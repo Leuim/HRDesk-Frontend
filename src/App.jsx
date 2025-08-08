@@ -6,6 +6,7 @@ import { UserContext } from './contexts/UserContext'
 import SignInForm from './components/SignInForm/SignInForm'
 import AdminDashboard from './components/AdminDashboard/AdminDashboard'
 import EmployeesRecords from './components/EmployeesRecords/EmployeesRecords'
+import PendingLeaveRequests from './components/PendingLeaveRequests/PendingLeaveRequests'
 
 const App = () => {
   const {user} = useContext(UserContext)
@@ -18,9 +19,10 @@ const App = () => {
       <Route path='/' element={<h1>Home</h1>}/>
       <Route path='/sign-up' element={<SignUpForm/>}/>
       <Route path='/sign-in' element={<SignInForm/>}/>
-      <Route path='/admin-dashboard' element={<AdminDashboard/>}/>
-      <Route path='/admin-dashboard/employees-records' element={<EmployeesRecords/>}/>
-      <Route path='/admin-dashboard/pending-leaverequests'/>
+       <Route path="/admin-dashboard" element={<AdminDashboard />}>
+          <Route path="employees-records" element={<EmployeesRecords />} />
+          <Route path="pending-leave-requests" element={<PendingLeaveRequests />} />
+        </Route>
     </Routes>
     </>
   )
