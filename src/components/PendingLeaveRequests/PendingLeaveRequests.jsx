@@ -12,7 +12,7 @@ const PendingLeaveRequests = () => {
             const pendingLeaves = allLeaves.filter((leaves) => {
                 return leaves.status === 'pending'
             })
-            console.log(pendingLeaves.length);
+            // console.log(pendingLeaves.length);
             setPendingRequests(pendingLeaves)
             setPendingRequestCount(pendingLeaves.length)
         }
@@ -31,14 +31,21 @@ const PendingLeaveRequests = () => {
         return days;
     };
 
-    const handleApprove = async () => {
-
+    const handleApprove = async (leaveRequestId, daysCount, leaveType) => {
+        try {
+            const updatedLeave = await LeaveRequestService.approve(leaveRequestId, daysCount, leaveType)
+            const copyPendingLeaves = pendingRequests.filter((leaves) => leaves._id !== updatedLeave._id)
+            setPendingRequests(copyPendingLeaves)
+            setPendingRequestCount(copyPendingLeaves.length)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
 
-    const handleReject = async ()=>{
-        
-    }
+    // const handleReject = async () => {
+
+    // }
     return (
         <>
             <div>
@@ -55,7 +62,7 @@ const PendingLeaveRequests = () => {
                                 <p>Number of days {daysCount}</p>
                                 <p>Reason: {request.reason}</p>
                                 <p>Submitted At: {request.createdAt.split('T')[0]}</p>
-                                <button onClick={handleApprove(daysCount, request.leaveType)}>Approve</button>
+                                <button onClick={() => handleApprove(request._id,daysCount, request.leaveType)}>Approve</button>
                                 <button>Reject</button>
                             </div>
                         )
