@@ -26,8 +26,8 @@ const approve = async (leaveRequestId, daysCount, leaveType) => {
                 Authorization: `Bearer ${localStorage.getItem('token')}`,
                 'Content-Type': 'application/json'
             },
-             body: JSON.stringify({
-                daysCount:Number(daysCount),
+            body: JSON.stringify({
+                daysCount: Number(daysCount),
                 leaveType
             })
         })
@@ -42,4 +42,26 @@ const approve = async (leaveRequestId, daysCount, leaveType) => {
     }
 }
 
-export { index, approve }
+const reject = async (leaveRequestId, rejectionReason) => {
+    try {
+        const res = await fetch(`${BASE_URL}/${leaveRequestId}/reject`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                rejectionReason:rejectionReason})
+        })
+        const data = await res.json()
+        if (data.err) {
+            throw new Error(data.err)
+        }
+        return data.leave
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+
+export { index, approve, reject }

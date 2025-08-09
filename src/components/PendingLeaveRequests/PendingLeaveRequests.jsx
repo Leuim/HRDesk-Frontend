@@ -4,6 +4,9 @@ import * as LeaveRequestService from '../../services/leaveRequestService'
 
 const PendingLeaveRequests = () => {
     const [pendingRequests, setPendingRequests] = useState([])
+    const [isRejectionFormOn, setIsRejectionFormOn] = useState(false)
+    const [rejectionReason, setRejectionReason] = useState('')
+    const [selectedRequest, setSelectedRequest] = useState({})
     const { setPendingRequestCount } = useOutletContext()
     useEffect(() => {
 
@@ -43,9 +46,27 @@ const PendingLeaveRequests = () => {
     }
 
 
-    // const handleReject = async () => {
-
-    // }
+    const handleReject = async () => {
+        try {
+            const updatedLeave = await LeaveRequestService.reject(selectedRequest._id, rejectionReason)
+            const copyPendingLeaves = pendingRequests.filter((leaves) => leaves._id !== updatedLeave._id)
+            setPendingRequests(copyPendingLeaves)
+            setPendingRequestCount(copyPendingLeaves.length)
+            setSelectedRequest({})
+            setRejectionReason('')
+        } catch (error) {
+            console.log(error);
+        }
+        
+    }
+    const handleChange = (evt) => {
+        setRejectionReason(evt.target.value)
+    }
+    const handleCancel = () => {
+        setIsRejectionFormOn(false)
+        setRejectionReason('')
+        setSelectedRequest({})
+    }
     return (
         <>
             <div>
@@ -62,8 +83,8 @@ const PendingLeaveRequests = () => {
                                 <p>Number of days {daysCount}</p>
                                 <p>Reason: {request.reason}</p>
                                 <p>Submitted At: {request.createdAt.split('T')[0]}</p>
-                                <button onClick={() => handleApprove(request._id,daysCount, request.leaveType)}>Approve</button>
-                                <button>Reject</button>
+                                <button onClick={() => handleApprove(request._id, daysCount, request.leaveType)}>Approve</button>
+                                <button onClick={() => { setIsRejectionFormOn(true); setSelectedRequest(request); }}>Reject</button>
                             </div>
                         )
                     })
@@ -74,6 +95,16 @@ const PendingLeaveRequests = () => {
                 )}
             </div>
 
+            {isRejectionFormOn ? (<div>
+                <div>
+                    <form >
+                        <label htmlFor="rejectionReason">Rejection reason</label>
+                        <input type="text" name="rejectionReason" id="rejectionReason" onChange={handleChange} value={rejectionReason} />
+                        <button type='submit' onClick={() => handleReject()}>Reject Leave Request</button>
+                        <button type='button' onClick={handleCancel}>Cancel</button>
+                    </form>
+                </div>
+            </div>) : null}
         </>
     )
 }
