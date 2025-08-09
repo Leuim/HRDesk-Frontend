@@ -38,7 +38,9 @@ const signIn = async (formData)=>{
         }
         if(data.token){
             localStorage.setItem('token', data.token)
+            //  localStorage.setItem('userId', data.userId); 
             return JSON.parse(atob(data.token.split('.')[1])).payload
+            
         }
         throw new Error('Invalid response from the server')
     } catch (error) {

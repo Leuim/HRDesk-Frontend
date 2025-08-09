@@ -1,9 +1,10 @@
 import React, { useContext } from 'react'
-import { Route, Routes } from 'react-router'
+import { Route, Routes } from 'react-router-dom'
 import NavBar from './components/NavBar/NavBar'
 import SignUpForm from './components/SignUpForm/SignUpForm'
 import { UserContext } from './contexts/UserContext'
 import SignInForm from './components/SignInForm/SignInForm'
+
 import AdminDashboard from './components/AdminDashboard/AdminDashboard'
 import EmployeesRecords from './components/EmployeesRecords/EmployeesRecords'
 import PendingLeaveRequests from './components/PendingLeaveRequests/PendingLeaveRequests'
