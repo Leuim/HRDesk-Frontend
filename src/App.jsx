@@ -5,6 +5,10 @@ import SignUpForm from './components/SignUpForm/SignUpForm'
 import { UserContext } from './contexts/UserContext'
 import SignInForm from './components/SignInForm/SignInForm'
 
+import EmployeeDashboard from './components/EmployeeDashboard/EmployeeDashboard'
+import LeaveForm from './components/LeaveForm/LeaveForm'
+import LeaveList from './components/LeaveList/LeaveList'
+
 import AdminDashboard from './components/AdminDashboard/AdminDashboard'
 import EmployeesRecords from './components/EmployeesRecords/EmployeesRecords'
 import PendingLeaveRequests from './components/PendingLeaveRequests/PendingLeaveRequests'
@@ -23,7 +27,11 @@ const App = () => {
           <Route path="employees-records" element={<EmployeesRecords />} />
           <Route path="pending-leave-requests" element={<PendingLeaveRequests />} />
         </Route>
-        
+
+          <Route path='/leaveRequest' element={<LeaveForm/>} />
+      <Route path='/employee-dashboard' element={<EmployeeDashboard/>}  />
+      <Route path="Leaves" element={<LeaveList/>}/>
+
       </Routes>
     </>
   )
