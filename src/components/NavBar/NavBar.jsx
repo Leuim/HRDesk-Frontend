@@ -11,6 +11,7 @@ const NavBar = () => {
   return (
     <nav>
       <ul>
+        <li><Link to='/'>Home</Link></li>
         {user ? (
           <>
             <li><Link to='/' onClick={handleSignout}>Sign Out</Link></li>
@@ -18,7 +19,7 @@ const NavBar = () => {
               <li><Link to='/admin-dashboard'>Admin dashboard</Link></li>
               <li><Link to='/admin-dashboard/pending-leave-requests'>Pending Leave Requests</Link></li>
               <li><Link to='/admin-dashboard/employees-records'>View Employees Records</Link></li>
-              </>
+          </>
             ) : (
               <li><Link to='/employee-dashboard'>Employee dashboard</Link></li>
             )}
