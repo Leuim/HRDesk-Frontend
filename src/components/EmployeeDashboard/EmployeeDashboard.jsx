@@ -31,7 +31,12 @@ const EmployeeDashboard = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
+
+    <>
+      <h1>Hello {user.name}, Welcome to Employee dashboard</h1>
+
     <div>
+
       <h2>Leave Balance</h2>
       {balance && (
         <>
@@ -56,6 +61,7 @@ const EmployeeDashboard = () => {
        
       
     </div>
+     </>
   );
 };
 

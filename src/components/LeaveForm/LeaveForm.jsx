@@ -9,33 +9,31 @@ const LeaveForm = () => {
     fromDate: '',
     toDate: '',
     reason: '',
-    status: 'pending'
+    status: 'pending',
+    duration: 0 // Added duration to initial form data
   };
 
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [formData, setFormData] = useState(initialFormData);
-  const [duration, setDuration] = useState(0);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
-  const [balance, setBalance] = useState({
-    annual: 60,  // Default values from your balance model
-    sick: 20,
-    paternity: 10,
-    others: 20
-  });
+  const [balance, setBalance] = useState(null);
 
-  // Load actual balance data when component mounts
+  // Load balance data
   useEffect(() => {
     const fetchBalance = async () => {
       try {
         if (user?._id) {
           const response = await getLeaveBalance(user._id);
-          if (response && response.length > 0) {
-            // Update with actual values from database
-            setBalance(response[0]);
-          }
-          // If no balance found, keep the default values
+          // Handle both array and object responses
+          const balanceData = Array.isArray(response) ? response[0] : response;
+          setBalance(balanceData || {
+            annual: 60,
+            sick: 20,
+            paternity: 10,
+            others: 20
+          });
         }
       } catch (err) {
         console.error('Failed to load balance:', err);
@@ -60,10 +58,10 @@ const LeaveForm = () => {
       }
       
       const calculatedDuration = Math.ceil((toDate - fromDate) / (1000 * 60 * 60 * 24)) + 1;
-      setDuration(calculatedDuration);
+      setFormData(prev => ({ ...prev, duration: calculatedDuration }));
       
       // Validate against balance
-      if (formData.leaveType && balance[formData.leaveType] !== undefined) {
+      if (formData.leaveType && balance?.[formData.leaveType] !== undefined) {
         if (calculatedDuration > balance[formData.leaveType]) {
           setError(`You don't have enough ${formData.leaveType} leave (Available: ${balance[formData.leaveType]} days)`);
         } else if (calculatedDuration <= 0) {
@@ -96,27 +94,21 @@ const LeaveForm = () => {
       return;
     }
 
-    if (duration > balance[formData.leaveType]) {
-      setError(`Cannot request ${duration} days (only ${balance[formData.leaveType]} available)`);
+    if (formData.duration > balance[formData.leaveType]) {
+      setError(`Cannot request ${formData.duration} days (only ${balance[formData.leaveType]} available)`);
       return;
     }
 
     try {
-      // Prepare data for both models
       const requestData = {
-        // LeaveRequest fields
         leaveType: formData.leaveType,
         fromDate: formData.fromDate,
         toDate: formData.toDate,
         reason: formData.reason,
-        duration: duration,
+        duration: formData.duration, // Include duration in request
         status: formData.status,
         submittedBy: user._id,
-        
-        // Balance update fields
-        leaveBalanceType: formData.leaveType,
-        leaveBalanceDuration: duration,
-        employeeId: user._id
+        leaveBalanceType: formData.leaveType
       };
 
       const result = await createLeaveRequest(requestData);
@@ -205,15 +197,20 @@ const LeaveForm = () => {
           />
         </div>
 
-        {formData.leaveType && (
+        {/* Duration Display */}
+        <div className="duration-info">
+          <p><strong>Requested Duration:</strong> {formData.duration} day{formData.duration !== 1 ? 's' : ''}</p>
+        </div>
+
+        {formData.leaveType && balance[formData.leaveType] !== undefined && (
           <div className="balance-info">
             <p>
               <strong>Available {formData.leaveType} leave:</strong> {balance[formData.leaveType]} days
-              {duration > 0 && balance[formData.leaveType] >= duration && (
-                <span> → Will have {balance[formData.leaveType] - duration} days remaining</span>
+              {formData.duration > 0 && balance[formData.leaveType] >= formData.duration && (
+                <span> → Remaining: {balance[formData.leaveType] - formData.duration} days</span>
               )}
             </p>
-            {duration > 0 && balance[formData.leaveType] < duration && (
+            {formData.duration > 0 && balance[formData.leaveType] < formData.duration && (
               <p className="insufficient-balance">
                 Not enough days available for this request
               </p>
