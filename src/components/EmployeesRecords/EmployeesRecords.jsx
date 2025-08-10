@@ -10,7 +10,6 @@ const EmployeesRecords = () => {
     const [isFormOn, setIsFormOn] = useState(false)
 
     const [searchName, setSearchName] = useState('')
-    const [searchRole, setSearchRole] = useState('')
 
     useEffect(() => {
         (async () => {
@@ -42,8 +41,7 @@ const EmployeesRecords = () => {
 
     const filteredEmployees = employees.filter(employee => {
         const nameMatch = employee.name.toLowerCase().includes(searchName.toLowerCase())
-        const roleMatch = searchRole ? employee.role === searchRole : true
-        return nameMatch && roleMatch
+        return nameMatch 
     })
 
     return (
@@ -58,14 +56,7 @@ const EmployeesRecords = () => {
                     value={searchName}
                     onChange={(evt) => setSearchName(evt.target.value)}
                 />
-                <select
-                    value={searchRole}
-                    onChange={(evt) => setSearchRole(evt.target.value)}
-                >
-                    <option value="">All Roles</option>
-                    <option value="employee">Employee</option>
-                    <option value="admin">Admin</option>
-                </select>
+
             </div>
 
             <table>
