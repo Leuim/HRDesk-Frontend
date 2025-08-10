@@ -1,45 +1,52 @@
-import { useNavigate } from "react-router";
 import { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import { createLeaveRequest, getLeaveBalance } from '../../services/LeaveService';
 
 const LeaveForm = () => {
   const initialFormData = {
-    leaveType: '', // This will match leaveBalance fields (annual, sick, etc.)
+    leaveType: '',
     fromDate: '',
     toDate: '',
     reason: '',
-    status: 'pending' // Added status field for leave request
+    status: 'pending',
+    duration: 0 // Added duration to initial form data
   };
- const navigate = useNavigate();
+
+  const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [formData, setFormData] = useState(initialFormData);
-  const [duration, setDuration] = useState(0);
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const [balance, setBalance] = useState(null);
-
 
   // Load balance data
   useEffect(() => {
-    if (user?._id) {
-      const loadData = async () => {
-        try {
-          const data = await getLeaveBalance(user._id);
-          console.log('Fetched balance:', data);
-          // Assuming data is an array, take the first item
-          setBalance(Array.isArray(data) ? data[0] : data);
-        } catch (err) {
-          setError(err.message);
-        } finally {
-          setLoading(false);
+    const fetchBalance = async () => {
+      try {
+        if (user?._id) {
+          const response = await getLeaveBalance(user._id);
+          // Handle both array and object responses
+          const balanceData = Array.isArray(response) ? response[0] : response;
+          setBalance(balanceData || {
+            annual: 60,
+            sick: 20,
+            paternity: 10,
+            others: 20
+          });
         }
-      };
-      loadData();
-    }
+      } catch (err) {
+        console.error('Failed to load balance:', err);
+        setError('Failed to load leave balance data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBalance();
   }, [user?._id]);
 
-  // Calculate duration and validate
+  // Calculate duration and validate dates
   useEffect(() => {
     if (formData.fromDate && formData.toDate) {
       const fromDate = new Date(formData.fromDate);
@@ -49,78 +56,83 @@ const LeaveForm = () => {
         setError('End date cannot be before start date');
         return;
       }
-
-      const days = Math.ceil((toDate - fromDate) / (1000 * 60 * 60 * 24)) + 1;
-      setDuration(days);
-
-      // Validate balance if leave type selected
+      
+      const calculatedDuration = Math.ceil((toDate - fromDate) / (1000 * 60 * 60 * 24)) + 1;
+      setFormData(prev => ({ ...prev, duration: calculatedDuration }));
+      
+      // Validate against balance
       if (formData.leaveType && balance?.[formData.leaveType] !== undefined) {
-        if (days > balance[formData.leaveType]) {
-          setError(`Not enough ${formData.leaveType} leave days available`);
+        if (calculatedDuration > balance[formData.leaveType]) {
+          setError(`You don't have enough ${formData.leaveType} leave (Available: ${balance[formData.leaveType]} days)`);
+        } else if (calculatedDuration <= 0) {
+          setError('Duration must be at least 1 day');
         } else {
           setError('');
         }
       }
     }
-  }, [formData, balance]);
+  }, [formData.fromDate, formData.toDate, formData.leaveType, balance]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    
+    if (name === 'fromDate') {
+      setFormData(prev => ({ ...prev, toDate: '' }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!balance) {
-      setError('No leave balance data available');
+    // Final validation
+    if (!formData.leaveType) {
+      setError('Please select a leave type');
+      return;
+    }
+
+    if (formData.duration > balance[formData.leaveType]) {
+      setError(`Cannot request ${formData.duration} days (only ${balance[formData.leaveType]} available)`);
       return;
     }
 
     try {
-      // Prepare data for both models
       const requestData = {
-        // LeaveRequest model fields
         leaveType: formData.leaveType,
         fromDate: formData.fromDate,
         toDate: formData.toDate,
         reason: formData.reason,
-        duration: duration,
+        duration: formData.duration, // Include duration in request
         status: formData.status,
         submittedBy: user._id,
-        
-        // LeaveBalance model reference
-        leaveBalanceRef: balance._id // Assuming balance has an _id field
+        leaveBalanceType: formData.leaveType
       };
 
       const result = await createLeaveRequest(requestData);
+      
+      // Update local balance state with the response
+      if (result.updatedBalance) {
+        setBalance(result.updatedBalance);
+      }
+      
       navigate('/employee-dashboard', {
         state: { 
           message: 'Leave requested successfully!',
-          newBalance: result.updatedBalance // Updated balance from response
+          newBalance: result.updatedBalance || balance
         }
       });
+      
     } catch (err) {
-      setError(err.message || 'Submission failed');
+      console.error('Submission error:', err);
+      setError(err.message || 'Failed to submit leave request');
     }
   };
 
   if (loading) {
-    return <div>Loading leave data...</div>;
-  }
-
-  if (!balance) {
-    return (
-      <div className="no-balance-container">
-        <h3>Leave Request</h3>
-        <p className="no-balance-message">No leave balance data available</p>
-        <div className="action-buttons">
-          <button onClick={() => navigate('/employee-dashboard')}>
-            Back to Dashboard
-          </button>
-        </div>
-      </div>
-    );
+    return <div className="loading-message">Loading leave data...</div>;
   }
 
   return (
@@ -130,14 +142,14 @@ const LeaveForm = () => {
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Leave Type *</label>
+          <label htmlFor="leaveType">Leave Type *</label>
           <select
+            id="leaveType"
             name="leaveType"
             value={formData.leaveType}
             onChange={handleChange}
             required
           >
-            
             <option value="">Select Type</option>
             <option value="annual">Annual</option>
             <option value="sick">Sick</option>
@@ -147,62 +159,84 @@ const LeaveForm = () => {
         </div>
 
         <div className="form-group">
-          <label>From Date *</label>
+          <label htmlFor="fromDate">From Date *</label>
           <input
             type="date"
+            id="fromDate"
             name="fromDate"
-          
-            value={formData.fromDate}
+            min={new Date().toISOString().split('T')[0]}
             onChange={handleChange}
+            value={formData.fromDate}
             required
           />
         </div>
 
         <div className="form-group">
-          <label>To Date *</label>
+          <label htmlFor="toDate">To Date *</label>
           <input
             type="date"
+            id="toDate"
             name="toDate"
-           
-            value={formData.toDate}
+            min={formData.fromDate || new Date().toISOString().split('T')[0]}
             onChange={handleChange}
+            value={formData.toDate}
             required
+            disabled={!formData.fromDate}
           />
         </div>
 
         <div className="form-group">
-          <label>Reason *</label>
+          <label htmlFor="reason">Reason *</label>
           <textarea
+            id="reason"
             name="reason"
             value={formData.reason}
             onChange={handleChange}
             required
+            minLength={10}
           />
         </div>
-       {formData.leaveType && (
+
+        {/* Duration Display */}
+        <div className="duration-info">
+          <p><strong>Requested Duration:</strong> {formData.duration} day{formData.duration !== 1 ? 's' : ''}</p>
+        </div>
+
+        {formData.leaveType && balance[formData.leaveType] !== undefined && (
           <div className="balance-info">
-            Available {formData.leaveType} leave: {balance[formData.leaveType]} days
-            {duration > 0 && balance[formData.leaveType] >= duration && (
-              <span> → Remaining: {balance[formData.leaveType] - duration} days</span>
+            <p>
+              <strong>Available {formData.leaveType} leave:</strong> {balance[formData.leaveType]} days
+              {formData.duration > 0 && balance[formData.leaveType] >= formData.duration && (
+                <span> → Remaining: {balance[formData.leaveType] - formData.duration} days</span>
+              )}
+            </p>
+            {formData.duration > 0 && balance[formData.leaveType] < formData.duration && (
+              <p className="insufficient-balance">
+                Not enough days available for this request
+              </p>
             )}
           </div>
         )}
 
         <div className="form-actions">
-          <button type="submit" disabled={!!error || loading}>
-            Submit Request
+          <button
+            type="submit"
+            disabled={!!error || loading}
+            className="submit-button"
+          >
+            {loading ? 'Processing...' : 'Submit Request'}
           </button>
-          <button 
-            type="button" 
+          <button
+            type="button"
             onClick={() => navigate('/employee-dashboard')}
+            className="cancel-button"
           >
             Cancel
           </button>
         </div>
       </form>
     </div>
-    
-  )
-}
+  );
+};
 
 export default LeaveForm;
