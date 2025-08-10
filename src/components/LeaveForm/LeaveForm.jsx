@@ -31,7 +31,6 @@ const LeaveForm = () => {
           setBalance(balanceData || {
             annual: 60,
             sick: 20,
-            paternity: 10,
             others: 20
           });
         }
@@ -153,7 +152,6 @@ const LeaveForm = () => {
             <option value="">Select Type</option>
             <option value="annual">Annual</option>
             <option value="sick">Sick</option>
-            <option value="paternity">Paternity</option>
             <option value="others">Other</option>
           </select>
         </div>

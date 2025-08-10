@@ -48,7 +48,7 @@ const ListLeaves = () => {
                 {new Date(request.fromDate).toLocaleDateString()} - 
                 {new Date(request.toDate).toLocaleDateString()}
               </td>
-              <td>{request.duration} days</td> {/* Display duration */}
+              <td>{request.duration} days</td> 
               <td className={`status-${request.status}`}>
                 {request.status}
               </td>
