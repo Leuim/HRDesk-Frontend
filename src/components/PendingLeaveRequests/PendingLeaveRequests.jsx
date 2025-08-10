@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import * as LeaveRequestService from '../../services/leaveRequestService'
 
-const PendingLeaveRequests = ({setPendingRequestCount}) => {
+const PendingLeaveRequests = ({setPendingRequestCount, pendingRequestCount}) => {
     const [pendingRequests, setPendingRequests] = useState([])
     const [isRejectionFormOn, setIsRejectionFormOn] = useState(false)
     const [rejectionReason, setRejectionReason] = useState('')
@@ -68,6 +68,7 @@ const PendingLeaveRequests = ({setPendingRequestCount}) => {
     return (
         <>
             <div>
+                <h3>Total Amount of Pending Leave requests: {pendingRequestCount}</h3>
                 {pendingRequests.length !== 0 ? (
                     pendingRequests.map((request) => {
                         const daysCount = countDays(request.fromDate, request.toDate);

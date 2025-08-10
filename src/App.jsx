@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import NavBar from './components/NavBar/NavBar'
 import SignUpForm from './components/SignUpForm/SignUpForm'
@@ -13,10 +13,21 @@ import AdminDashboard from './components/AdminDashboard/AdminDashboard'
 import EmployeesRecords from './components/EmployeesRecords/EmployeesRecords'
 import PendingLeaveRequests from './components/PendingLeaveRequests/PendingLeaveRequests'
 import Landing from './components/Landing/Landing'
+import * as LeaveRequestService from './services/leaveRequestService'
+
 
 const App = () => {
   const { user } = useContext(UserContext)
   const [pendingRequestCount, setPendingRequestCount] = useState(0)
+
+    useEffect(() => {
+    const fetchPendingCount = async () => {
+      const allLeaves = await LeaveRequestService.index()
+      const pendingLeaves = allLeaves.filter(leave => leave.status === 'pending')
+      setPendingRequestCount(pendingLeaves.length)
+    }
+    fetchPendingCount()
+  }, [])
   return (
     <>
       <NavBar />
@@ -33,7 +44,7 @@ const App = () => {
             />
             <Route
               path='/pending-leave-requests'
-              element={<PendingLeaveRequests setPendingRequestCount={setPendingRequestCount} />}
+              element={<PendingLeaveRequests pendingRequestCount={pendingRequestCount} setPendingRequestCount={setPendingRequestCount} />}
             />
             <Route path='/employees-records' element={<EmployeesRecords />} />
           </>
