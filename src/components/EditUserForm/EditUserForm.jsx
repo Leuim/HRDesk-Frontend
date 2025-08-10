@@ -36,23 +36,30 @@ const EditUserForm = ({ selectedEmployee, setIsFormOn, handleEmployeeUpdate }) =
   };
 
 
-  const handleSubmit = async (evt) => {
-    evt.preventDefault();
-    try {
-      
-      const updatedUser = await userService.update(selectedEmployee._id, {
-        name: formData.name,
-        role: formData.role
-      });
- 
-      await leaveBalanceService.updateLeaveBalance(selectedEmployee.leavebalance._id, formData.leaveBalance);
+ const handleSubmit = async (evt) => {
+  evt.preventDefault();
+  try {
+    const updatedUser = await userService.update(selectedEmployee._id, {
+      name: formData.name,
+      role: formData.role,
+    });
 
-      handleEmployeeUpdate({ ...updatedUser, leavebalance: formData.leaveBalance });
-      setIsFormOn(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    const updatedLeaveBalance = await leaveBalanceService.updateLeaveBalance(
+      selectedEmployee.leavebalance._id,
+      formData.leaveBalance
+    );
+
+    handleEmployeeUpdate({
+      ...updatedUser,
+      leavebalance: updatedLeaveBalance,
+    });
+
+    setIsFormOn(false);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 
 
   return (
@@ -83,6 +90,7 @@ const EditUserForm = ({ selectedEmployee, setIsFormOn, handleEmployeeUpdate }) =
         name="annual"
         value={formData.leaveBalance.annual}
         onChange={handleChange}
+        min={0}
       />
 
       <label htmlFor="sick">Sick</label>
@@ -91,6 +99,7 @@ const EditUserForm = ({ selectedEmployee, setIsFormOn, handleEmployeeUpdate }) =
         name="sick"
         value={formData.leaveBalance.sick}
         onChange={handleChange}
+        min={0}
       />
 
       <label htmlFor="others">Others</label>
@@ -99,6 +108,7 @@ const EditUserForm = ({ selectedEmployee, setIsFormOn, handleEmployeeUpdate }) =
         name="others"
         value={formData.leaveBalance.others}
         onChange={handleChange}
+        min={0}
       />
 
       <button type="button" onClick={() => setIsFormOn(false)}>Cancel</button>
