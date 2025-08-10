@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useOutletContext } from 'react-router-dom'
 import * as LeaveRequestService from '../../services/leaveRequestService'
 
-const PendingLeaveRequests = () => {
+const PendingLeaveRequests = ({setPendingRequestCount}) => {
     const [pendingRequests, setPendingRequests] = useState([])
     const [isRejectionFormOn, setIsRejectionFormOn] = useState(false)
     const [rejectionReason, setRejectionReason] = useState('')
     const [selectedRequest, setSelectedRequest] = useState({})
-    const { setPendingRequestCount } = useOutletContext()
     useEffect(() => {
 
         const fetchPendingLeaveRequests = async () => {
