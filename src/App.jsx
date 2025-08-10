@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import NavBar from './components/NavBar/NavBar'
 import SignUpForm from './components/SignUpForm/SignUpForm'
@@ -13,9 +13,25 @@ import AdminDashboard from './components/AdminDashboard/AdminDashboard'
 import EmployeesRecords from './components/EmployeesRecords/EmployeesRecords'
 import PendingLeaveRequests from './components/PendingLeaveRequests/PendingLeaveRequests'
 import Landing from './components/Landing/Landing'
+import * as LeaveRequestService from './services/leaveRequestService'
+
 
 const App = () => {
   const { user } = useContext(UserContext)
+  const [pendingRequestCount, setPendingRequestCount] = useState()
+
+    useEffect(() => {
+    const fetchPendingCount = async () => {
+      if(user){
+      const allLeaves = await LeaveRequestService.index()
+      const pendingLeaves = allLeaves.filter(leave => leave.status === 'pending')
+      setPendingRequestCount(pendingLeaves.length)
+      } else {
+        return
+      }
+    }
+    fetchPendingCount()
+  }, [])
   return (
     <>
       <NavBar />
@@ -23,15 +39,23 @@ const App = () => {
         <Route path='/' element={<Landing />} />
         <Route path='/sign-up' element={<SignUpForm />} />
         <Route path='/sign-in' element={<SignInForm />} />
-        <Route path="/admin-dashboard" element={<AdminDashboard />}>
-          <Route path="employees-records" element={<EmployeesRecords />} />
-          <Route path="pending-leave-requests" element={<PendingLeaveRequests />} />
-        </Route>
 
-          <Route path='/leaveRequest' element={<LeaveForm/>} />
-      <Route path='/employee-dashboard' element={<EmployeeDashboard/>}  />
-      <Route path="Leaves" element={<LeaveList/>}/>
-
+        {user?.role === 'admin' && (
+          <>
+            <Route
+              path='/admin-dashboard'
+              element={<AdminDashboard pendingRequestCount={pendingRequestCount} />}
+            />
+            <Route
+              path='/pending-leave-requests'
+              element={<PendingLeaveRequests pendingRequestCount={pendingRequestCount} setPendingRequestCount={setPendingRequestCount} />}
+            />
+            <Route path='/employees-records' element={<EmployeesRecords />} />
+          </>
+        )}
+        <Route path='/leaveRequest' element={<LeaveForm />} />
+        <Route path='/employee-dashboard' element={<EmployeeDashboard />} />
+        <Route path="Leaves" element={<LeaveList />} />
       </Routes>
     </>
   )

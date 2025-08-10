@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useOutletContext } from 'react-router-dom'
 import * as LeaveRequestService from '../../services/leaveRequestService'
 
-const PendingLeaveRequests = () => {
+const PendingLeaveRequests = ({setPendingRequestCount, pendingRequestCount}) => {
     const [pendingRequests, setPendingRequests] = useState([])
     const [isRejectionFormOn, setIsRejectionFormOn] = useState(false)
     const [rejectionReason, setRejectionReason] = useState('')
     const [selectedRequest, setSelectedRequest] = useState({})
-    const { setPendingRequestCount } = useOutletContext()
     useEffect(() => {
 
         const fetchPendingLeaveRequests = async () => {
@@ -23,20 +21,20 @@ const PendingLeaveRequests = () => {
         fetchPendingLeaveRequests()
     }, [])
 
-    const countDays = (fromDate, toDate) => {
-        const start = new Date(fromDate);
-        const end = new Date(toDate);
+    // const countDays = (fromDate, toDate) => {
+    //     const start = new Date(fromDate);
+    //     const end = new Date(toDate);
 
-        const timeDiff = end - start;
+    //     const timeDiff = end - start;
 
-        const days = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)) + 1;
+    //     const days = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)) + 1;
 
-        return days;
-    };
+    //     return days;
+    // };
 
-    const handleApprove = async (leaveRequestId, daysCount, leaveType) => {
+    const handleApprove = async (leaveRequestId,  leaveType) => {
         try {
-            const updatedLeave = await LeaveRequestService.approve(leaveRequestId, daysCount, leaveType)
+            const updatedLeave = await LeaveRequestService.approve(leaveRequestId, leaveType)
             const copyPendingLeaves = pendingRequests.filter((leaves) => leaves._id !== updatedLeave._id)
             setPendingRequests(copyPendingLeaves)
             setPendingRequestCount(copyPendingLeaves.length)
@@ -70,9 +68,10 @@ const PendingLeaveRequests = () => {
     return (
         <>
             <div>
+                <h3>Total Amount of Pending Leave requests: {pendingRequestCount}</h3>
                 {pendingRequests.length !== 0 ? (
                     pendingRequests.map((request) => {
-                        const daysCount = countDays(request.fromDate, request.toDate);
+                        // const daysCount = countDays(request.fromDate, request.toDate);
                         return (
                             <div key={request._id}>
                                 <h3>Employee Name: {request.submittedBy.name}</h3>
@@ -80,10 +79,10 @@ const PendingLeaveRequests = () => {
                                 <p>Leave Type: {request.leaveType}</p>
                                 <p>From: {request.fromDate.split('T')[0]}</p>
                                 <p>To: {request.toDate.split('T')[0]}</p>
-                                <p>Number of days {daysCount}</p>
+                                <p>Number of days {request.duration}</p>
                                 <p>Reason: {request.reason}</p>
                                 <p>Submitted At: {request.createdAt.split('T')[0]}</p>
-                                <button onClick={() => handleApprove(request._id, daysCount, request.leaveType)}>Approve</button>
+                                <button onClick={() => handleApprove(request._id, request.leaveType)}>Approve</button>
                                 <button onClick={() => { setIsRejectionFormOn(true); setSelectedRequest(request); }}>Reject</button>
                             </div>
                         )

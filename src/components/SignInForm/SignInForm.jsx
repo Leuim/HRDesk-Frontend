@@ -20,7 +20,7 @@ const SignInForm = () => {
     try {
       const signedInUser = await signIn(formData);
       setUser(signedInUser);
-navigate('/employee-dashboard')
+      navigate('/')
     } catch (err) {
       console.log(err.message);
     }

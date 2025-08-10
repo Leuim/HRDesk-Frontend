@@ -2,13 +2,14 @@ const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/leaveRequest`
 
 const index = async () => {
     try {
-        const res = await fetch(BASE_URL, {
+        const res = await fetch(`${BASE_URL}/all-leaves`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         })
         const data = await res.json()
+        console.log('leaverquest data', data)
         if (data.err) {
             throw new Error(data.err)
         }
@@ -18,7 +19,7 @@ const index = async () => {
     }
 }
 
-const approve = async (leaveRequestId, daysCount, leaveType) => {
+const approve = async (leaveRequestId, leaveType) => {
     try {
         const res = await fetch(`${BASE_URL}/${leaveRequestId}/approve`, {
             method: 'PUT',
@@ -27,7 +28,6 @@ const approve = async (leaveRequestId, daysCount, leaveType) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                daysCount: Number(daysCount),
                 leaveType
             })
         })

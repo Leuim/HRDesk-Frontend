@@ -1,9 +1,26 @@
 // services/leaveService.js
 const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}`;
 
+export const getLeaveBalance = async (userId) => {
+  try {
+    const res = await fetch(`${BASE_URL}/leaveBalance/${userId}`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.err || 'Failed to fetch balance');
+    return data || { annual: 30, sick: 10, paternity: 10, others: 5 }; // Defaults
+  } catch (err) {
+    console.error('LeaveService Error:', err.message);
+    throw err;
+  }
+}
+
+
 export const getLeaveRequests = async (userId) => {
   try {
-    const res = await fetch(`${BASE_URL}/leaveRequest?employee=${userId}`, { 
+    const res = await fetch(`${BASE_URL}/leaveRequest?employee=${userId}`, { // Note: Change to your actual query param
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
@@ -40,21 +57,3 @@ export const createLeaveRequest = async (requestData) => {
   }
 };
 
-export const getLeaveBalance = async (userId) => {
-  try {
-    const res = await fetch(`${BASE_URL}/leaveBalance/${userId}`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      }
-    });
-
-    if (!res.ok) {
-      throw new Error('Failed to fetch balance');
-    }
-
-    return await res.json();
-  } catch (err) {
-    console.error('LeaveService Error:', err);
-    throw err;
-  }
-};

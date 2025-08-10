@@ -30,8 +30,8 @@ const ListLeaves = () => {
    
 
  <div className="leaveRequest">
-      <h2>Your Leave Requests</h2>
-      <table>
+      <h2>{user.name} Leave Requests</h2>
+      <table border={1} cellSpacing={5}>
         <thead>
           <tr>
             <th>Type</th>
@@ -48,7 +48,7 @@ const ListLeaves = () => {
                 {new Date(request.fromDate).toLocaleDateString()} - 
                 {new Date(request.toDate).toLocaleDateString()}
               </td>
-              <td>{request.duration} days</td> {/* Display duration */}
+              <td>{request.duration} days</td> 
               <td className={`status-${request.status}`}>
                 {request.status}
               </td>

@@ -8,6 +8,10 @@ const EmployeesRecords = () => {
     const [employees, setEmployees] = useState([])
     const [selectedEmployee, setSelectedEmployee] = useState({})
     const [isFormOn, setIsFormOn] = useState(false)
+
+    const [searchName, setSearchName] = useState('')
+    const [searchRole, setSearchRole] = useState('')
+
     useEffect(() => {
         (async () => {
             const employeesRecords = await userService.index()
@@ -18,33 +22,52 @@ const EmployeesRecords = () => {
             setEmployees(filteredEmployee)
         })()
     }, [])
-    const handleEmployeeUpdate = (updatedUser) => {
-        const updatedList = employees.map((employee) => {
-            if (employee._id === updatedUser._id) {
-                return updatedUser; 
-            } else {
-                return employee;
-            }
-        });
-        setEmployees(updatedList);
-    };
 
+    const handleEmployeeUpdate = (updatedUser) => {
+        setEmployees(prev =>
+            prev.map(employee => 
+                employee._id === updatedUser._id ? updatedUser : employee
+            )
+        )
+    }
 
     const handleDelete = async (employeeId) => {
         try {
             const deletedUser = await userService.deleteUser(employeeId)
-            const updatedEmployees = employees.filter((employee) => {
-                return employee._id !== deletedUser._id
-            })
-            setEmployees(updatedEmployees)
+            setEmployees(prev => prev.filter(e => e._id !== deletedUser._id))
         } catch (err) {
-            console.log(err);
+            console.log(err)
         }
     }
+
+    const filteredEmployees = employees.filter(employee => {
+        const nameMatch = employee.name.toLowerCase().includes(searchName.toLowerCase())
+        const roleMatch = searchRole ? employee.role === searchRole : true
+        return nameMatch && roleMatch
+    })
+
     return (
         <>
             <h1>Employees Records</h1>
             <button onClick={() => navigate('/sign-up')}>Sign Up a User</button>
+
+            <div>
+                <input
+                    type="text"
+                    placeholder="Search by name..."
+                    value={searchName}
+                    onChange={(evt) => setSearchName(evt.target.value)}
+                />
+                <select
+                    value={searchRole}
+                    onChange={(evt) => setSearchRole(evt.target.value)}
+                >
+                    <option value="">All Roles</option>
+                    <option value="employee">Employee</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+
             <table>
                 <thead>
                     <tr>
@@ -58,26 +81,48 @@ const EmployeesRecords = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {employees.length > 0 ? (
-                        employees.map((employee) => (
+                    {filteredEmployees.length > 0 ? (
+                        filteredEmployees.map(employee => (
                             <tr key={employee._id}>
                                 <td>{employee.name}</td>
                                 <td>{employee.role}</td>
                                 <td>{employee.leavebalance.annual}</td>
                                 <td>{employee.leavebalance.sick}</td>
                                 <td>{employee.leavebalance.others}</td>
-                                <td><button onClick={() => { setIsFormOn(true); setSelectedEmployee(employee); }}>Update User</button></td>
-                                <td><button onClick={() => handleDelete(employee._id)}>Delete User</button></td>
+                                <td>
+                                    <button
+                                        onClick={() => { 
+                                            setIsFormOn(true)
+                                            setSelectedEmployee(employee) 
+                                        }}
+                                    >
+                                        Update User
+                                    </button>
+                                </td>
+                                <td>
+                                    <button onClick={() => handleDelete(employee._id)}>
+                                        Delete User
+                                    </button>
+                                </td>
                             </tr>
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="7" style={{ textAlign: 'center' }}>No employees found</td>
+                            <td colSpan="7" style={{ textAlign: 'center' }}>
+                                No employees found
+                            </td>
                         </tr>
                     )}
                 </tbody>
             </table>
-            {isFormOn ? <EditUserForm selectedEmployee={selectedEmployee} setIsFormOn={setIsFormOn} handleEmployeeUpdate={handleEmployeeUpdate} /> : null}
+
+            {isFormOn && (
+                <EditUserForm
+                    selectedEmployee={selectedEmployee}
+                    setIsFormOn={setIsFormOn}
+                    handleEmployeeUpdate={handleEmployeeUpdate}
+                />
+            )}
         </>
     )
 }
