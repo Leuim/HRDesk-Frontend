@@ -12,7 +12,10 @@ const EmployeesRecords = () => {
         (async () => {
             const employeesRecords = await userService.index()
             // console.log('employee records', employeesRecords);
-            setEmployees(employeesRecords)
+            const filteredEmployee = employeesRecords.filter(employee =>{
+                return employee.role === 'employee'
+            })
+            setEmployees(filteredEmployee)
         })()
     }, [])
     const handleEmployeeUpdate = (updatedUser) => {
