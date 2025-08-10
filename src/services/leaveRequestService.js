@@ -19,7 +19,7 @@ const index = async () => {
     }
 }
 
-const approve = async (leaveRequestId, daysCount, leaveType) => {
+const approve = async (leaveRequestId, leaveType) => {
     try {
         const res = await fetch(`${BASE_URL}/${leaveRequestId}/approve`, {
             method: 'PUT',
@@ -28,7 +28,6 @@ const approve = async (leaveRequestId, daysCount, leaveType) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                daysCount: Number(daysCount),
                 leaveType
             })
         })

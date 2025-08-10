@@ -18,13 +18,17 @@ import * as LeaveRequestService from './services/leaveRequestService'
 
 const App = () => {
   const { user } = useContext(UserContext)
-  const [pendingRequestCount, setPendingRequestCount] = useState(0)
+  const [pendingRequestCount, setPendingRequestCount] = useState()
 
     useEffect(() => {
     const fetchPendingCount = async () => {
+      if(user){
       const allLeaves = await LeaveRequestService.index()
       const pendingLeaves = allLeaves.filter(leave => leave.status === 'pending')
       setPendingRequestCount(pendingLeaves.length)
+      } else {
+        return
+      }
     }
     fetchPendingCount()
   }, [])
