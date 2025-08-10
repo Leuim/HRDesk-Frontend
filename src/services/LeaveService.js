@@ -10,12 +10,13 @@ export const getLeaveBalance = async (userId) => {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.err || 'Failed to fetch balance');
-    return data[0] || { annual: 30, sick: 10, paternity: 10, others: 5 }; // Defaults
+    return data || { annual: 30, sick: 10, paternity: 10, others: 5 }; // Defaults
   } catch (err) {
     console.error('LeaveService Error:', err.message);
     throw err;
   }
 }
+
 
 export const getLeaveRequests = async (userId) => {
   try {
