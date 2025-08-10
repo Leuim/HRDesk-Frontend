@@ -42,7 +42,6 @@ const EmployeeDashboard = () => {
         <>
           <p>Annual: {balance.annual} days</p>
           <p>Sick: {balance.sick} days</p>
-          <p>Paternity: {balance.paternity} days</p>
          <p>Other: {balance.others} days</p>
              
         </>
