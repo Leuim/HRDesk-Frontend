@@ -21,17 +21,6 @@ const PendingLeaveRequests = ({setPendingRequestCount, pendingRequestCount}) => 
         fetchPendingLeaveRequests()
     }, [])
 
-    // const countDays = (fromDate, toDate) => {
-    //     const start = new Date(fromDate);
-    //     const end = new Date(toDate);
-
-    //     const timeDiff = end - start;
-
-    //     const days = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)) + 1;
-
-    //     return days;
-    // };
-
     const handleApprove = async (leaveRequestId,  leaveType) => {
         try {
             const updatedLeave = await LeaveRequestService.approve(leaveRequestId, leaveType)
