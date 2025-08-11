@@ -10,7 +10,7 @@ export const getLeaveBalance = async (userId) => {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.err || 'Failed to fetch balance');
-    return data || { annual: 30, sick: 10, paternity: 10, others: 5 }; // Defaults
+    return data || { annual: 30, sick: 10,  others: 5 }; 
   } catch (err) {
     console.error('LeaveService Error:', err.message);
     throw err;
@@ -20,7 +20,7 @@ export const getLeaveBalance = async (userId) => {
 
 export const getLeaveRequests = async (userId) => {
   try {
-    const res = await fetch(`${BASE_URL}/leaveRequest?employee=${userId}`, { // Note: Change to your actual query param
+    const res = await fetch(`${BASE_URL}/leaveRequest?employee=${userId}`, { 
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
