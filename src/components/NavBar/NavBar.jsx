@@ -21,6 +21,7 @@ const NavBar = () => {
               <li><Link to='/admin-dashboard'>Admin dashboard</Link></li>
               <li><Link to='/pending-leave-requests'>Pending Leave Requests</Link></li>
               <li><Link to='/employees-records'>View Employees Records</Link></li>
+              <li><Link to='/all-reviewed-leave-request'>All Reviewed Leave Requests</Link></li>
           </>
             ) : (
               <li><Link to='/employee-dashboard'>Employee dashboard</Link></li>

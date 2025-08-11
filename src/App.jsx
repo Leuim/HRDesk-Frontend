@@ -14,6 +14,7 @@ import EmployeesRecords from './components/EmployeesRecords/EmployeesRecords'
 import PendingLeaveRequests from './components/PendingLeaveRequests/PendingLeaveRequests'
 import Landing from './components/Landing/Landing'
 import * as LeaveRequestService from './services/leaveRequestService'
+import AllReviewedLeaveRequest from './components/AllReviewedLeaveRequest/AllReviewedLeaveRequest'
 
 
 const App = () => {
@@ -51,6 +52,7 @@ const App = () => {
               element={<PendingLeaveRequests pendingRequestCount={pendingRequestCount} setPendingRequestCount={setPendingRequestCount} />}
             />
             <Route path='/employees-records' element={<EmployeesRecords />} />
+            <Route path='/all-reviewed-leave-request' element={<AllReviewedLeaveRequest/>}/>
           </>
         )}
         <Route path='/leaveRequest' element={<LeaveForm />} />
