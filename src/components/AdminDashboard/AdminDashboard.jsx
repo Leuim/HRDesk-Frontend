@@ -13,7 +13,7 @@ const AdminDashboard = ({pendingRequestCount}) => {
       <h1>Hello {user.name}, Welcome to admin dashboard</h1>
       <div>
         <h2>Pending Leave Requests</h2>
-        <p>{pendingRequestCount} Pending Leave requests remaining</p>
+        <p>{pendingRequestCount  > 0 ? `You have ${pendingRequestCount} leave requests pending approval.` : 'You have no pending leave requests.'}</p>
       </div>
       <button onClick={() => navigate('/employees-records')}>Employees Records</button>
       <button onClick={() => navigate('/pending-leave-requests')}>Pending Leave Requests</button>
