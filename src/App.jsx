@@ -14,6 +14,7 @@ import EmployeesRecords from './components/EmployeesRecords/EmployeesRecords'
 import PendingLeaveRequests from './components/PendingLeaveRequests/PendingLeaveRequests'
 import Landing from './components/Landing/Landing'
 import * as LeaveRequestService from './services/leaveRequestService'
+import AllReviewedLeaveRequest from './components/AllReviewedLeaveRequest/AllReviewedLeaveRequest'
 
 
 const App = () => {
@@ -36,7 +37,7 @@ const App = () => {
     <>
       <NavBar />
       <Routes>
-        <Route path='/' element={<Landing />} />
+        <Route path='/' element={<Landing pendingRequestCount={pendingRequestCount}/>} />
         <Route path='/sign-up' element={<SignUpForm />} />
         <Route path='/sign-in' element={<SignInForm />} />
 
@@ -51,6 +52,7 @@ const App = () => {
               element={<PendingLeaveRequests pendingRequestCount={pendingRequestCount} setPendingRequestCount={setPendingRequestCount} />}
             />
             <Route path='/employees-records' element={<EmployeesRecords />} />
+            <Route path='/all-reviewed-leave-request' element={<AllReviewedLeaveRequest/>}/>
           </>
         )}
         <Route path='/leaveRequest' element={<LeaveForm />} />
