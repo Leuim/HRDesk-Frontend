@@ -6,6 +6,7 @@ import { UserContext } from '../../contexts/UserContext';
 const SignInForm = () => {
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
+  const [errorMessage, setErrorMessage] = useState('')
   const [formData, setFormData] = useState({
     name: '',
     password: '',
@@ -17,18 +18,23 @@ const SignInForm = () => {
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
+
     try {
       const signedInUser = await signIn(formData);
-      setUser(signedInUser);
-      navigate('/')
+      if (signedInUser) {
+        setErrorMessage('')
+        setUser(signedInUser);
+        navigate('/')
+      }
     } catch (err) {
-      console.log(err.message);
+      setErrorMessage(err.message)
     }
   };
 
   return (
     <main>
       <h1>Sign In</h1>
+      {errorMessage ? (<p style={{ color: 'red' }}>{errorMessage}</p>) : null}
       <form autoComplete='off' onSubmit={handleSubmit}>
         <div>
           <label htmlFor='name'>Username:</label>

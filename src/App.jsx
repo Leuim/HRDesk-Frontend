@@ -37,7 +37,7 @@ const App = () => {
     <>
       <NavBar />
       <Routes>
-        <Route path='/' element={<Landing />} />
+        <Route path='/' element={<Landing pendingRequestCount={pendingRequestCount}/>} />
         <Route path='/sign-up' element={<SignUpForm />} />
         <Route path='/sign-in' element={<SignInForm />} />
 

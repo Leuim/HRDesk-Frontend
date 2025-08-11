@@ -19,7 +19,7 @@ const index = async () => {
     }
 }
 
-const approve = async (leaveRequestId, leaveType) => {
+const approve = async (leaveRequestId, leaveType, submittedBy) => {
     try {
         const res = await fetch(`${BASE_URL}/${leaveRequestId}/approve`, {
             method: 'PUT',
@@ -27,7 +27,7 @@ const approve = async (leaveRequestId, leaveType) => {
                 Authorization: `Bearer ${localStorage.getItem('token')}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({leaveType })
+            body: JSON.stringify({leaveType, submittedBy })
         })
         // console.log('leave type:',leaveType, 'days count: ', daysCount);
         const data = await res.json()
