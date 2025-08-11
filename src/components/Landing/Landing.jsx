@@ -1,31 +1,44 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { UserContext } from '../../contexts/UserContext'
-import { useContext } from 'react'
 import { useNavigate } from 'react-router'
 
-const Landing = () => {
-    const { user } = useContext(UserContext)
-    const navigate = useNavigate()
-    return (
-<div>
-  {user ? (
-    user.role === 'admin' ? (
-      <>
-        <h1>Welcome to HRDesk {user.name}.</h1>
-        <button onClick={()=>navigate('/admin-dashboard')}>Admin Dashboard</button>
-      </>
-    ) : (
-      <>
-        <h1>Welcome to HRDesk {user.name}.</h1>
-        <button onClick={()=>navigate('/employee-dashboard')}>Employee Dashboard</button>
-      </>
-    )
-  ) : (
-    <>
-    <h1>Welcome to HRDesk, Please Sign In.</h1>
-    <button onClick={() =>navigate('/sign-in')}>Sign In</button>
-    </>
-  )}
-</div>
-    )}
+const Landing = ({pendingRequestCount}) => {
+  const { user } = useContext(UserContext)
+  const navigate = useNavigate()
+
+  return (
+    <div >
+      {user ? (
+        <>
+          <h1>Welcome to HRDesk, {user.name}!</h1>
+          <p>
+            {user.role === 'admin'
+              ? 'Manage leave requests and keep the team organized.'
+              : 'Request leave and track your leave balance easily.'}
+          </p>
+
+          {user.role === 'admin' ? (
+            <>
+              <p>{pendingRequestCount  > 0 ? `You have ${pendingRequestCount} leave requests pending approval.` : 'You have no pending leave requests.'}</p>
+              <button onClick={() => navigate('/admin-dashboard')}>Admin Dashboard</button>
+            </>
+          ) : (
+            <>
+              <button onClick={() => navigate('/employee-dashboard')}>Employee Dashboard</button>
+            </>
+          )}
+        </>
+      ) : (
+        <>
+          <h1>Welcome to HRDesk</h1>
+          <p>
+            An easy way for employees to request leave and for admins to manage them.
+          </p>
+          <button onClick={() => navigate('/sign-in')}>Sign In</button>
+        </>
+      )}
+    </div>
+  )
+}
+
 export default Landing
