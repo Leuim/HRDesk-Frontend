@@ -195,7 +195,6 @@ const LeaveForm = () => {
           />
         </div>
 
-        {/* Duration Display */}
         <div className="duration-info">
           <p><strong>Requested Duration:</strong> {formData.duration} day{formData.duration !== 1 ? 's' : ''}</p>
         </div>

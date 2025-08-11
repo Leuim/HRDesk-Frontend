@@ -27,9 +27,7 @@ const approve = async (leaveRequestId, leaveType) => {
                 Authorization: `Bearer ${localStorage.getItem('token')}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                leaveType
-            })
+            body: JSON.stringify({leaveType })
         })
         // console.log('leave type:',leaveType, 'days count: ', daysCount);
         const data = await res.json()

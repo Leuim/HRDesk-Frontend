@@ -26,6 +26,8 @@ const ListLeaves = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
+
+
   return (
    
 
@@ -38,6 +40,8 @@ const ListLeaves = () => {
             <th>Dates</th>
             <th>Duration</th>
             <th>Status</th>
+            <th>Review By</th>
+            <th>Reject Reason</th>
           </tr>
         </thead>
         <tbody>
@@ -52,6 +56,9 @@ const ListLeaves = () => {
               <td className={`status-${request.status}`}>
                 {request.status}
               </td>
+              <td>{request.reviewBy || 'Pending'} </td>
+                <td>{request.rejectionReason}</td>
+
             </tr>
           ))}
         </tbody>
