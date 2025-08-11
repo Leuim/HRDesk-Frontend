@@ -19,7 +19,6 @@ const Landing = ({pendingRequestCount}) => {
 
           {user.role === 'admin' ? (
             <>
-              <p>{pendingRequestCount  > 0 ? `You have ${pendingRequestCount} leave requests pending approval.` : 'You have no pending leave requests.'}</p>
               <button onClick={() => navigate('/admin-dashboard')}>Admin Dashboard</button>
             </>
           ) : (
