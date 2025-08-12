@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import { useNavigate } from 'react-router-dom';
-import logo from '../../assets/logo.png'
+import logo from '../../assets/logo.png';
 
 const NavBar = () => {
   const { user, setUser } = useContext(UserContext);
@@ -16,95 +16,89 @@ const NavBar = () => {
 
   return (
     <nav
-      className="navbar px-3"
+      className="navbar navbar-expand-lg px-3"
       style={{ backgroundColor: '#022e2eff' }}
     >
-      <Link
-        className="navbar-brand fw-bold"
-        to="/"
-        >
-        <img src={logo} alt="logo" width="50" height="50"></img>
-      </Link>
-
-      <div className="d-flex align-items-center">
-        <Link
-          className=" nav-link text-white px-2"
-          to="/"
-          style={{ textDecoration: 'none' }}
-        >
-          <span className='btn btn-primary'>Home</span>
+      <div className="container-fluid">
+        <Link className="navbar-brand fw-bold text-white" to="/">
+          <img src={logo} alt="logo" width="50" height="50" />
         </Link>
 
-        {user ? (
-          <>
-            <Link
-              className="nav-link text-white px-2"
-              to="/"
-              onClick={handleSignout}
-              style={{ textDecoration: 'none' }}
-            >
-               <span className='btn btn-primary'>Sign Out</span>
-            </Link>
+        <button
+          className="navbar-toggler bg-light"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
 
-            {user.role === 'admin' ? (
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <div className="ms-auto d-flex align-items-center gap-2">
+            {user ? (
               <>
-                <Link
-                  className="nav-link text-white px-2"
-                  to="/admin-dashboard"
-                  style={{ textDecoration: 'none' }}
+
+                {user.role === 'admin' && (
+                  <div className="dropdown">
+                    <button
+                      className="btn btn-primary dropdown-toggle"
+                      type="button"
+                      id="adminDropdown"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Admin Menu
+                    </button>
+                    <ul className="dropdown-menu dropdown-menu-dark" aria-labelledby="adminDropdown">
+                      <li>
+                        <Link className="dropdown-item" to="/admin-dashboard">
+                          Dashboard
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="dropdown-item" to="/pending-leave-requests">
+                          Pending Leave Requests
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="dropdown-item" to="/employees-records">
+                          Employees Records
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="dropdown-item" to="/all-reviewed-leave-request">
+                          All Reviewed Leave Requests
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+
+                {user.role !== 'admin' && (
+                  <Link className="btn btn-primary" to="/employee-dashboard">
+                    Employee Dashboard
+                  </Link>
+                )}
+
+                <button
+                  onClick={handleSignout}
+                  className="btn btn-danger ms-2"
                 >
-                   <span className='btn btn-primary'>Admin Dashboard</span>
-                </Link>
-                <Link
-                  className="nav-link text-white px-2"
-                  to="/pending-leave-requests"
-                  style={{ textDecoration: 'none' }}
-                >
-                   <span className='btn btn-primary'>Pending Leave Requests</span>
-                </Link>
-                <Link
-                  className="nav-link text-white px-2"
-                  to="/employees-records"
-                  style={{ textDecoration: 'none' }}
-                >
-                   <span className='btn btn-primary'>Employees Records</span>
-                </Link>
-                <Link
-                  className="nav-link text-white px-2"
-                  to="/all-reviewed-leave-request"
-                  style={{ textDecoration: 'none' }}
-                >
-                   <span className='btn btn-primary'>All Reviewed Leave Requests</span>
-                </Link>
+                  Sign Out
+                </button>
               </>
             ) : (
-              <Link
-                className="nav-link text-white px-2"
-                to="/employee-dashboard"
-                style={{ textDecoration: 'none' }}
-              >
-                 <span className='btn btn-primary'>Employee Dashboard</span>
-              </Link>
+              <>
+                <Link className="btn btn-primary" to="/sign-in">
+                  Sign In
+                </Link>
+                <Link className="btn btn-success" to="/sign-up">
+                  Sign Up
+                </Link>
+              </>
             )}
-          </>
-        ) : (
-          <>
-            <Link
-              className="nav-link text-white px-2"
-              to="/sign-in"
-              style={{ textDecoration: 'none' }}
-            >
-               <span className='btn btn-primary'>Sign In</span>
-            </Link>
-            <Link
-              className="nav-link text-white px-2"
-              to="/sign-up"
-              style={{ textDecoration: 'none' }}
-            >
-               <span className='btn btn-primary'>Sign Up</span>
-            </Link>
-          </>
-        )}
+          </div>
+        </div>
       </div>
     </nav>
   );
