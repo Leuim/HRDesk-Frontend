@@ -18,8 +18,13 @@ body {
   border-color: #006e60;
 }
 
+.btn-primary:active {
+  background-color: #008371;
+  border-color: #006e60;
+}
+
 .text-secondary {
-  color: #9EB8B5 !important;
+  color: #ddf8f5 !important;
 }
 
 .alert-success {
@@ -30,4 +35,12 @@ body {
 .alert-warning {
   background-color: #F9A825;
   color: #0B1416;
+}
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.show > .btn-primary.dropdown-toggle {
+  background-color: #008371 !important; 
+  border-color: #006e60 !important;
+  outline: none !important;
 }

@@ -38,7 +38,7 @@ const AllReviewedLeaveRequest = () => {
                                 <p>Number of days {request.duration}</p>
                                 <p>Reason: {request.reason}</p>
                                 <p>Submitted At: {request.createdAt.split('T')[0]}</p>
-                                <p>reviewed By: {request.reviewBy.name}</p>
+                                <p>reviewed By: {request.reviewBy}</p>
                                 <p>Status: {request.status}</p>
                             </div>
                         )
