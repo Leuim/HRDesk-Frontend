@@ -44,3 +44,11 @@ body {
   border-color: #006e60 !important;
   outline: none !important;
 }
+
+.btn-primary:disabled,
+.btn-primary.disabled {
+  background-color: #064e44 !important; 
+  border-color: #043a34 !important;
+  opacity: 0.65; 
+  cursor: not-allowed;
+}
