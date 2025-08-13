@@ -15,10 +15,13 @@ const Landing = () => {
       <h1 className="my-5">
         {user ? `Welcome to HRDesk, ${user.name}!` : 'Welcome to HRDesk'}
       </h1>
-      <img className='justify-content-center' src={logoHD} alt="logo" width='400' height='300'/>
+      <img className='justify-content-center' src={logoHD} alt="logo" width='400' height='300' />
       <div
         className="card mx-auto shadow-lg mt-auto"
-        style={{ maxWidth: '500px' }}
+        style={{
+          maxWidth: '500px',
+          borderRadius: '1rem'
+        }}
       >
         <div className="card-body">
           <p className="card-text text-secondary mb-4">

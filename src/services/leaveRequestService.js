@@ -9,7 +9,7 @@ const index = async () => {
             }
         })
         const data = await res.json()
-        console.log('leaverquest data', data)
+        
         if (data.err) {
             throw new Error(data.err)
         }
@@ -29,7 +29,6 @@ const approve = async (leaveRequestId, leaveType, submittedBy) => {
             },
             body: JSON.stringify({leaveType, submittedBy })
         })
-        // console.log('leave type:',leaveType, 'days count: ', daysCount);
         const data = await res.json()
         if (data.err) {
             throw new Error(data.err)
