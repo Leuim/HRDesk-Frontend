@@ -15,7 +15,7 @@ const AllReviewedLeaveRequest = () => {
     }, []);
 
     const filteredRequests = reviewedRequests.filter(request =>
-        request.submittedBy.name.toLowerCase().includes(searchEmpName.toLowerCase())
+        request.submittedBy?.name.toLowerCase().includes(searchEmpName.toLowerCase())
     );
 
     return (
@@ -46,6 +46,7 @@ const AllReviewedLeaveRequest = () => {
                                     <h6 className="card-subtitle mb-3 text-muted fw-bold text-center">
                                         {request.leaveType.charAt(0).toUpperCase() + request.leaveType.slice(1)} Leave
                                     </h6>
+                                    <hr />
                                     <p className="mb-1"><strong>From:</strong> {request.fromDate.split('T')[0]}</p>
                                     <p className="mb-1"><strong>To:</strong> {request.toDate.split('T')[0]}</p>
                                     <p className="mb-1"><strong>Days:</strong> {request.duration}</p>
