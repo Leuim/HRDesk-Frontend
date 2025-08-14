@@ -44,3 +44,251 @@ body {
   border-color: #006e60 !important;
   outline: none !important;
 }
+
+
+.dashboard-card {
+ 
+   display: flex;
+   justify-content: center;
+   text-align: center;
+}
+
+.dashboard-card:hover {
+ font-weight: lighter;
+}
+
+.dashboard-card i {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.card-1 {
+  background-color: #042b36;
+     display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  border: 2px solid #ffc107;
+  transition: all 0.3s ease;
+  height: 250px;
+  width: 250px;
+  margin: 10px;
+  padding: 20px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: bold;
+  font-size: 2.5em;
+  color: #50a5ff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+}
+
+.card-2 {
+  background-color: #006400;
+     display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  border: 2px solid #ffc107;
+  transition: all 0.3s ease;
+  height: 250px;
+  width: 250px;
+  margin: 10px;
+  padding: 20px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: bold;
+  font-size: 2.5em;
+  color: #50a5ff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+}
+
+.card-3 {
+  background-color: #a8e715;
+     display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  border: 2px solid #ffc107;
+  height: 250px;
+  width: 250px;
+  margin: 10px;
+  padding: 20px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: bold;
+  font-size: 2.5em;
+  color: #50a5ff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+}
+
+
+.dashboard-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #1DD1A1;
+  margin-bottom: 2rem;
+   text-align: center;
+}
+
+
+.dashboard-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  margin: 0.5rem;
+  border-radius: 50px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  border: none;
+
+}
+
+.dashboard-btn i {
+  margin-right: 8px;
+}
+
+.btn-new-leave {
+  background-color: #46f800;
+  color: #e1f101;
+   font-weight: bold;
+   width: 250px;
+  height: 70px;
+ font-size: large;
+ text-decoration:none;
+}
+
+.btn-list-leave {
+  background-color: #f7e75b;
+  color: #ffff0b;
+  width: 250px;
+  height: 70px;
+  font-size: large;
+    font-weight: bold;
+    text-decoration:none;
+}
+
+.btn-cancel {
+  background-color: #ff3131;
+  color: white;
+}
+
+.btn-submit {
+  background-color: #00203d;
+  color: whitesmoke;
+  border: 1px solid #007bff;
+}
+
+/* Form Container */
+.leave-form-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #105aa3;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+  padding: 10px;
+  font-weight: bolder;
+}
+
+.form-actions {
+  
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px; 
+  margin: 10px;
+}
+
+.leaveRequest{
+
+  display: flex;
+  justify-content: center;
+}
+
+
+.leave-requests-container {
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: #036bd4;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.leave-requests-container h2 {
+  color: #1DD1A1;
+  margin-bottom: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.leave-requests-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+  border: 1px solid wheat;
+}
+
+.leave-requests-table thead {
+  background-color: #042b36;
+  color: rgb(209, 240, 240);
+}
+
+.leave-requests-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+}
+
+.leave-requests-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #dee2e6;
+  vertical-align: middle;
+  font-size: larger;
+}
+
+.leave-requests-table tbody tr:hover {
+  background-color: rgba(0, 123, 255, 0.05);
+}
+
+
+.status-pending {
+  background-color: #ffda07;
+  color: #212529;
+  font-weight: bold;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  text-align: center;
+}
+
+.status-approved {
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  text-align: center;
+}
+
+.status-rejected {
+  background-color: #dc3545;
+  color: white;
+  font-weight: bold;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  text-align: center;
+}
+
+
+
