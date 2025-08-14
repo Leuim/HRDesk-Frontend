@@ -10,7 +10,7 @@ const LeaveForm = () => {
     toDate: '',
     reason: '',
     status: 'pending',
-    duration: 0 // Added duration to initial form data
+    duration: 0 
   };
 
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const LeaveForm = () => {
   const [loading, setLoading] = useState(true);
   const [balance, setBalance] = useState(null);
 
-  // Load balance data
+ 
   useEffect(() => {
     const fetchBalance = async () => {
       try {
@@ -59,7 +59,7 @@ const LeaveForm = () => {
       const calculatedDuration = Math.ceil((toDate - fromDate) / (1000 * 60 * 60 * 24)) + 1;
       setFormData(prev => ({ ...prev, duration: calculatedDuration }));
       
-      // Validate against balance
+   
       if (formData.leaveType && balance?.[formData.leaveType] !== undefined) {
         if (calculatedDuration > balance[formData.leaveType]) {
           setError(`You don't have enough ${formData.leaveType} leave (Available: ${balance[formData.leaveType]} days)`);
@@ -87,7 +87,7 @@ const LeaveForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Final validation
+  
     if (!formData.leaveType) {
       setError('Please select a leave type');
       return;
@@ -141,8 +141,8 @@ const LeaveForm = () => {
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="leaveType">Leave Type *</label>
-          <select
+          <label htmlFor="leaveType"> Leave Type *</label>
+          <select  class="form-select"
             id="leaveType"
             name="leaveType"
             value={formData.leaveType}
@@ -185,13 +185,15 @@ const LeaveForm = () => {
 
         <div className="form-group">
           <label htmlFor="reason">Reason *</label>
-          <textarea
+          <textarea 
             id="reason"
             name="reason"
             value={formData.reason}
             onChange={handleChange}
             required
-            minLength={10}
+            minLength={5}
+            // rows={"4"}
+            // cols={"4"}
           />
         </div>
 
@@ -216,17 +218,17 @@ const LeaveForm = () => {
         )}
 
         <div className="form-actions">
-          <button
+          <button 
             type="submit"
             disabled={!!error || loading}
-            className="submit-button"
+            className="btn-submit"
           >
             {loading ? 'Processing...' : 'Submit Request'}
           </button>
-          <button
+          <button id="cancelRequest"
             type="button"
             onClick={() => navigate('/employee-dashboard')}
-            className="cancel-button"
+            className="btn-cancel"
           >
             Cancel
           </button>

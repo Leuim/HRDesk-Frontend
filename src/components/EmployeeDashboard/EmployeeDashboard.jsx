@@ -4,6 +4,7 @@ import { UserContext } from '../../contexts/UserContext';
 import { getLeaveBalance } from '../../services/LeaveService';
 import { Link } from 'react-router-dom';
 
+
 const EmployeeDashboard = () => {
   const { user } = useContext(UserContext);
   const [balance, setBalance] = useState(null);
@@ -12,7 +13,7 @@ const EmployeeDashboard = () => {
 
   
 useEffect(() => {
-  let isMounted = true; // Flag to track mounted state
+  let isMounted = true; 
   
   const loadData = async () => {
     try {
@@ -23,7 +24,7 @@ useEffect(() => {
       
       if (isMounted) {
         setBalance(data);
-        console.log('Updated balance:', data); // Log the NEW data directly
+        console.log('Updated balance:', data); 
       }
     } catch (err) {
       if (isMounted) {
@@ -44,9 +45,9 @@ useEffect(() => {
   }
 
   return () => {
-    isMounted = false; // Cleanup function
+    isMounted = false; 
   };
-}, [user?._id]); // Proper dependency array
+}, [user?._id]); 
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -54,31 +55,35 @@ useEffect(() => {
   return (
 
     <>
-      <h1>Hello {user.name}, Welcome to Employee dashboard</h1>
+    
+      <h1>Hello  {user.name}, Welcome to Employee dashboard</h1>
 
-    <div>
+    <div class="container text-center py-5" >
 
-      <h2>Leave Balance</h2>
+  <h1 class='dashboard-title'>  Leave Balance</h1>
       {balance && (
         <>
-          <p>Annual: {balance.annual} days</p>
-          <p>Sick: {balance.sick} days</p>
-         <p>Other: {balance.others} days</p>
-             
+        
+        <div class='dashboard-card'> 
+                
+         <div class='card-1 '> <p>Annual: </p>  {balance.annual} days</div>
+          <div class='card-2'><p>Sick: </p>{balance.sick} days</div>
+         <div class='card-3'><p>Other:</p>{balance.others} days</div>
+        </div>
         </>
       )}
 
-
-        <button> <Link to="/leaveRequest" className="btn">
+       <div class='dashboard-btn'> 
+         <button  className='btn-new-leave'> <Link to="/leaveRequest" >
           Request Leave
         </Link> </button>
        
-        <button> 
-        <Link to="/Leaves" className="btn">
+        <button className='btn-list-leave'> 
+        <Link to="/Leaves">
           View My Requests
         </Link>
         </button>
-       
+      </div>
       
     </div>
      </>
