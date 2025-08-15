@@ -12,41 +12,24 @@ const EmployeeDashboard = () => {
   const [error, setError] = useState(null);
 
   
-useEffect(() => {
-  let isMounted = true; 
-  
-  const loadData = async () => {
-    try {
-      setError(null);
-      setLoading(true);
-      
-      const data = await getLeaveBalance(user._id);
-      
-      if (isMounted) {
-        setBalance(data);
-      }
-    } catch (err) {
-      if (isMounted) {
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const data = await getLeaveBalance(user._id);
+        setBalance(data); console.log(balance);
+        
+      } catch (err) {
+
         setError(err.message);
-        console.error('Error fetching balance:', err);
+      } finally {
+        setLoading(false); 
+        
       }
-    } finally {
-      if (isMounted) {
-        setLoading(false);
-      }
-    }
-  };
+    };
 
-  if (user?._id) {
-    loadData();
-  } else {
-    setLoading(false);
-  }
-
-  return () => {
-    isMounted = false; 
-  };
-}, [user?._id]); 
+    if (user?._id) loadData();
+  }, [user?._id]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
