@@ -12,6 +12,7 @@ const EmployeeDashboard = () => {
   const [error, setError] = useState(null);
 
   
+
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -19,6 +20,7 @@ const EmployeeDashboard = () => {
         setBalance(data); console.log(balance);
         
       } catch (err) {
+
         setError(err.message);
       } finally {
         setLoading(false); 
@@ -38,22 +40,22 @@ const EmployeeDashboard = () => {
     
       <h1>Hello  {user.name}, Welcome to Employee dashboard</h1>
 
-    <div class="container text-center py-5" >
+    <div className="container text-center py-5" >
 
-  <h1 class='dashboard-title'>  Leave Balance</h1>
+  <h1 className='dashboard-title'>  Leave Balance</h1>
       {balance && (
         <>
         
-        <div class='dashboard-card'> 
+        <div className='dashboard-card'> 
                 
-         <div class='card-1 '> <p>Annual: </p>  {balance.annual} days</div>
-          <div class='card-2'><p>Sick: </p>{balance.sick} days</div>
-         <div class='card-3'><p>Other:</p>{balance.others} days</div>
+         <div className='card-1 '> <p>Annual: </p>  {balance.annual} days</div>
+          <div className='card-2'><p>Sick: </p>{balance.sick} days</div>
+         <div className='card-3'><p>Other:</p>{balance.others} days</div>
         </div>
         </>
       )}
 
-       <div class='dashboard-btn'> 
+       <div className='dashboard-btn'> 
          <button  className='btn-new-leave'> <Link to="/leaveRequest" >
           Request Leave
         </Link> </button>
