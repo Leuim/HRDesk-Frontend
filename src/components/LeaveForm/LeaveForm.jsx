@@ -141,8 +141,8 @@ const LeaveForm = () => {
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="leaveType"> Leave Type *</label>
-          <select  class="form-select"
+          <label htmlFor="leaveType form-label"> Leave Type *</label>
+          <select  className="form-select"
             id="leaveType"
             name="leaveType"
             value={formData.leaveType}
@@ -157,7 +157,7 @@ const LeaveForm = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="fromDate">From Date *</label>
+          <label htmlFor="fromDate form-label">From Date *</label>
           <input
             type="date"
             id="fromDate"
@@ -221,14 +221,14 @@ const LeaveForm = () => {
           <button 
             type="submit"
             disabled={!!error || loading}
-            className="btn-submit"
+            className="btn btn-submit"
           >
             {loading ? 'Processing...' : 'Submit Request'}
           </button>
           <button id="cancelRequest"
             type="button"
             onClick={() => navigate('/employee-dashboard')}
-            className="btn-cancel"
+            className="btn btn-cancel"
           >
             Cancel
           </button>

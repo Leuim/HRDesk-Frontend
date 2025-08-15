@@ -4,17 +4,20 @@ import { UserContext } from '../../contexts/UserContext'
 import * as leaveRequestServices from '../../services/leaveRequestService'
 import './AdminDashboard.css'
 
-const AdminDashboard = ({ pendingRequestCount }) => {
+const AdminDashboard = () => {
   const { user } = useContext(UserContext)
   const navigate = useNavigate()
   const [approvedRequestCount, setApprovedRequestsCount] = useState(0)
   const [rejectedRequestCount, setRejectedRequestsCount] = useState(0)
+  const [pendingRequestCount, setPendingRequestsCount] = useState(0)
+
 
   useEffect(() => {
     const fetchLeaves = async () => {
       const allLeaves = await leaveRequestServices.index()
       setApprovedRequestsCount(allLeaves.filter(leave => leave.status === 'approved').length)
       setRejectedRequestsCount(allLeaves.filter(leave => leave.status === 'rejected').length)
+      setPendingRequestsCount(allLeaves.filter(leave => leave.status === 'pending').length)
     }
 
     fetchLeaves()

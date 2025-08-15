@@ -4,6 +4,7 @@ const updateLeaveBalance = async (leavebalanceId, formData) =>{
   const res = await fetch(`${BASE_URL}/${leavebalanceId}`, {
     method: 'PUT',
     headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(formData),

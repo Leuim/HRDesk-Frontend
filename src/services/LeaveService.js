@@ -9,7 +9,6 @@ export const getLeaveBalance = async (userId) => {
       }
     });
     const data = await res.json();
-    console.log('leave balance return from fetch', data); 
 
     if (!res.ok) throw new Error(data.err || 'Failed to fetch balance');
     return data || { annual: 30, sick: 10,  others: 5 };
