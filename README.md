@@ -13,7 +13,7 @@ HRDesk is a web application which allows normal employees to submit leave reques
 ### [Link To BackEnd Repo](https://github.com/Leuim/HRDesk-Backend)
 ### 1. ERD
 
->![HRDesk ERD](https://i.imgur.com/4KLd4Mb.png)
+>![HRDesk ERD](image.png)
 
 ### 2. WireFrames
 
