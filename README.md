@@ -7,7 +7,7 @@ HRDesk is a web application which allows normal employees to submit leave reques
 
 
 ## Getting Started
-> # [Live Demo](https://kaleidoscopic-beijinho-0d6619.netlify.app/employees-records)
+> # [Live Demo](https://kaleidoscopic-beijinho-0d6619.netlify.app/)
 ### Project Planning
 ### [Link To Trello Board](https://trello.com/b/9THMnS2M/hrdesk)
 ### [Link To BackEnd Repo](https://github.com/Leuim/HRDesk-Backend)
